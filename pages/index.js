@@ -1,0 +1,11 @@
+import Head from 'next/head'
+import Image from 'next/image'
+import styles from '../styles/Home.module.css'
+
+export default function Home() {
+  return (
+    <div className="w-full h-full">
+      <h2 className='text-2xl text-red-500'>MaYi's Web App</h2>
+    </div>
+  )
+}
