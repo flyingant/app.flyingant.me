@@ -25,7 +25,7 @@ export default function Page() {
       <div className="container flex flex-col p-4 relative">
         <small className='absolute top-0 right-2'>length: {count}</small>
         <div className="w-full flex flex-col items-end">
-          <textarea className="textarea w-full border border-gray-200 outline-none p-2" rows="18" onChange={onHandleChange} value={content}></textarea>
+          <textarea className="textarea w-full border border-gray-200 outline-none p-2" rows={18} onChange={onHandleChange} value={content}></textarea>
         </div>
       </div>
     </div>
