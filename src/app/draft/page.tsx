@@ -6,18 +6,23 @@ import PageTitle from '@/components/PageTitle';
 export default function Page() {
   const [content, setContent] = useState('');
   const [count, setCount] = useState(0);
+  const [hashString, setHash] = useState('');
   const onHandleChange = (event: any) => {
     setContent(event.target.value)
     setCount(event.target.value.length)
-    window.location.hash = Base64.encode(event.target.value);
+    setHash(Base64.encode(event.target.value))
   };
   useEffect(() => {
     const { hash } = window.location;
     if (hash) {
       const content = `${Base64.decode(hash.slice(1, hash.length))}`
       setContent(content)
+      setHash(hash)
     }
   }, []);
+  useEffect(() => {
+    window.location.hash = hashString;
+  });
   return (
     <div className="w-full h-screen flex flex-col items-center justify-start">
       <PageTitle name="Draft"/>
