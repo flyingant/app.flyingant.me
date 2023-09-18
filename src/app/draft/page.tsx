@@ -1,6 +1,6 @@
 "use client"
 import { Base64 } from 'js-base64'
-import JSONFormatter from 'json-formatter-js'
+import JSONFormatter from '@/utils/JSONFormatter'
 import { useEffect, useState, useRef } from 'react'
 import PageTitle from '@/components/PageTitle';
 
