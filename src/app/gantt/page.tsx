@@ -18,8 +18,8 @@ const initGanttChartData = {
   links: []
 }
 
-export default function Page({ params }: { params: { slug: string } }) {
-  const ganttChartId = params.slug
+export default function Page() {
+  const [ganttChartId, setGanttChartId] = useState('')
   const [ganttChartData, setGanttChartData] = useState(initGanttChartData);
   const [loading, setLoading] = useState(true)
   const onChangeGanttChartData = (data: {}) => {
@@ -43,7 +43,9 @@ export default function Page({ params }: { params: { slug: string } }) {
       const {
         data: { id },
       } = results;
-      window.location.href = window.location.href.substring(0, window.location.href.lastIndexOf('/'))+ `/${id}`;
+      window.location.href = window.location.href.substring(0, window.location.href.lastIndexOf('#'))+ `#${id}`;
+      setGanttChartId(id)
+      onFetchGanttChartData(id)
     }
     if (confirm('Creating New Gantt Chart?')) {
       createGanttChartData({
@@ -54,8 +56,8 @@ export default function Page({ params }: { params: { slug: string } }) {
       });
     }
   }
-  const onFetchGanttChartData = () => {
-    console.debug("Gantt Chart Id:", ganttChartId);
+  const onFetchGanttChartData = (id: string) => {
+    console.debug("Gantt Chart Id:", id);
     // fetch the GanttChartData
     const fetchGanttChartData = async (id: string) => {
       setLoading(true)
@@ -70,13 +72,16 @@ export default function Page({ params }: { params: { slug: string } }) {
       } = results;
       setGanttChartData(data);
     };
-    fetchGanttChartData(ganttChartId).catch(() => {
+    fetchGanttChartData(id).catch(() => {
       alert('Gantt Chart Data is not found! Please check your link carefully!')
     });
   }
   // init the page
   useEffect(() => {
-    onFetchGanttChartData()
+    const { hash } = window.location;
+    const id = hash.slice(1, hash.length);
+    setGanttChartId(id);
+    onFetchGanttChartData(id)
   }, []);
   //
   // useEffect(() => {
@@ -86,7 +91,7 @@ export default function Page({ params }: { params: { slug: string } }) {
     <div className="w-full h-screen flex flex-col items-center justify-start">
       <PageTitle name="Gantt Chart" />
       <div className="container w-full flex items-center justify-end mb-2">
-        <button type='button' className='text-xs bg-white hover:bg-gray-100 text-gray-400 py-1 px-2 mx-1 border border-gray-400 rounded shadow' onClick={onFetchGanttChartData}>
+        <button type='button' className='text-xs bg-white hover:bg-gray-100 text-gray-400 py-1 px-2 mx-1 border border-gray-400 rounded shadow' onClick={() => onFetchGanttChartData(ganttChartId)}>
           { loading ? <Spinner/> : 'Sync'}
         </button>
         <button type='button' className='text-xs bg-white hover:bg-gray-100 text-gray-400 py-1 px-2 mx-1 border border-gray-400 rounded shadow' onClick={onCreateGanttChartData}>+ New</button>
